@@ -1,11 +1,98 @@
-def je_tah_mozny_strelec():
-    pass
+def je_tah_mozny_pesec(pozice, cil, obsazene):
+    radek, sloupec = pozice
+    cil_radek, cil_sloupec = cil
+    delka_radek, delka_sloupec = cil_radek - radek, cil_sloupec - sloupec
 
-def je_tah_mozny_vez():
-    pass
+    if delka_sloupec != 0:
+        return False
+    
+    if delka_radek == 1 and (cil_radek, cil_sloupec) not in obsazene:
+        return True
+    
+    if radek == 2 and delka_radek == 2 and (radek + 1, sloupec) not in obsazene and (cil_radek, cil_sloupec) not in obsazene:
+        return True
+    
+    return False
+    
 
-def je_tah_mozny_strelec() or je_tah_mozny_vez():
-    pass
+def je_tah_mozny_vez(pozice, cil, obsazene):
+    radek, sloupec = pozice
+    cil_radek, cil_sloupec = cil
+    delka_radek, delka_sloupec = cil_radek - radek, cil_sloupec - sloupec
+
+    if delka_radek != 0 and delka_sloupec != 0:
+        return False
+    
+    if delka_radek == 0:
+        if delka_sloupec > 0:
+            krok = 1
+        else:
+            krok = -1
+        for i in range(sloupec + krok, cil_sloupec, krok):
+            if (radek, i) in obsazene:
+                return False
+    else:
+        if delka_radek > 0:
+            krok = 1
+        else:
+            krok = -1
+        for i in range(radek + krok, cil_radek, krok):
+            if (i, sloupec) in obsazene:
+                return False
+            
+    return True
+
+
+def je_tah_mozny_strelec(pozice, cil, obsazene):
+    radek, sloupec = pozice
+    cil_radek, cil_sloupec = cil
+    delka_radek, delka_sloupec = cil_radek - radek, cil_sloupec - sloupec
+
+    if abs(delka_radek) != abs(delka_sloupec):
+        return False
+    
+    if delka_radek > 0:
+        krok_radek = 1
+    else:
+        krok_radek = -1
+
+    if delka_sloupec > 0:
+        krok_sloupec = 1
+    else:
+        krok_sloupec = -1
+
+    for i in range(1, abs(delka_radek)):
+        if (radek + i * krok_radek, sloupec + i * krok_sloupec) in obsazene:
+            return False
+    
+    return True
+
+
+def je_tah_mozny_jezdec(pozice, cil, obsazene):
+    radek, sloupec = pozice
+    cil_radek, cil_sloupec = cil
+    delka_radek, delka_sloupec = abs(cil_radek - radek), abs(cil_sloupec - sloupec)
+    
+    return(delka_radek, delka_sloupec) in [(2, 1), (1, 2)]
+
+
+def je_tah_mozny_kral(pozice, cil, obsazene):
+    radek, sloupec = pozice
+    cil_radek, cil_sloupec = cil
+    
+    return abs(cil_radek - radek) <= 1 and abs(cil_sloupec - sloupec) <= 1
+
+
+def je_tah_mozny_dama(pozice, cil, obsazene):
+    
+    if je_tah_mozny_vez(pozice, cil, obsazene) or je_tah_mozny_strelec(pozice, cil, obsazene):
+        return True
+    
+    return False
+
+
+
+
 
 def je_tah_mozny(figurka, cilova_pozice, obsazene_pozice):
     """
@@ -18,7 +105,33 @@ def je_tah_mozny(figurka, cilova_pozice, obsazene_pozice):
     :return: True, pokud je tah možný, jinak False.
     """
     # Implementace pravidel pohybu pro různé figury zde.
-    return False
+
+    typ = figurka["typ"]
+    pozice = figurka["pozice"]
+    cil_radek, cil_sloupec = cilova_pozice
+
+
+    if not (1 <= cil_radek <= 8 and 1 <= cil_sloupec <= 8):
+        return False
+    
+    if cilova_pozice in obsazene_pozice:
+        return False
+    
+    if typ == "pěšec":
+        return je_tah_mozny_pesec(pozice, cilova_pozice, obsazene_pozice)
+    elif typ == "věž":
+        return je_tah_mozny_vez(pozice, cilova_pozice, obsazene_pozice)
+    elif typ == "střelec":
+        return je_tah_mozny_strelec(pozice, cilova_pozice, obsazene_pozice)
+    elif typ == "jezdec":
+        return je_tah_mozny_jezdec(pozice, cilova_pozice, obsazene_pozice)
+    elif typ == "král":
+        return je_tah_mozny_kral(pozice, cilova_pozice, obsazene_pozice)
+    elif typ == "dáma":
+        return je_tah_mozny_dama(pozice, cilova_pozice, obsazene_pozice)
+    else:
+        return False
+    
 
 
 if __name__ == "__main__":

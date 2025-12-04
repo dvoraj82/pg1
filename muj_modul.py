@@ -3,7 +3,7 @@ def fibonaci(maximum):
     value = 2
     while value <= maximum:
         result.append(value)
-        value += result[-2] + result[-1]
+        value = result[-2] + result[-1]
     return result
 
 

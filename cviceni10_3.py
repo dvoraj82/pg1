@@ -25,7 +25,7 @@ class Zamestnanec(ABC):
 class Programator(Zamestnanec):
     def vypocitej_mzdu(self):
         zakladni_mzda = super().vypocitej_mzdu()
-        return zakladni_mzda * 1.1
+        return int(zakladni_mzda * 1.1)
         
 
 
@@ -43,7 +43,7 @@ class Manazer(Zamestnanec):
     def vypocitej_mzdu(self):
         zakladni_mzda = super().vypocitej_mzdu()
         bonus = self.pocet_podrizenych * 1000
-        return zakladni_mzda + bonus
+        return int(zakladni_mzda + bonus)
 
 
 if __name__ == "__main__":

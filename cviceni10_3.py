@@ -50,6 +50,7 @@ if __name__ == "__main__":
     p1 = Programator("Alice", 40000)
     m1 = Manazer("Bob", 50000, 5)
 
+#Častá otázak je polymorphismus, tady se demonstruje)
     zamestnanci = [p1, m1]
 
     for zamestnanec in zamestnanci:
